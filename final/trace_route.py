@@ -141,32 +141,20 @@ def UDPhdr():
 	print(header_len)
 	UDPheader = struct.pack("!HHHH",src_port, dst_port, header_len, checksum)+data
 	
-	return UDPheader 
-		
-def receivepacket(SOCK, rtime, ip, result):
-      rpacket, addr = SOCK.recvfrom(1024)
-      result = addr
-      
+	return UDPheader
  
-
 def ping(domain, rtime = 1):
-
-   with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)as sniffe_sock:
-
-      sniffe_sock.setsockopt(socket.IPPROTO_IP,socket.IP_HDRINCL,1)
-
-      packet = iphdr() + UDPhdr()
-
-      sniffe_sock.sendto(packet,(domain,0))
-
-      result=''
-      result= sniffe_sock.recvfrom(1024)
-      print(result)
-      sniffe_sock.close()
-  
-      return result
-
- 
+	with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)as sniffe_sock:
+		sniffe_sock.setsockopt(socket.IPPROTO_IP,socket.IP_HDRINCL,1)
+		packet = iphdr() + UDPhdr()
+		sniffe_sock.sendto(packet,(domain,0))
+		with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)as receive_sock:
+			result = 'i dont know'
+			result = receive_sock.recvfrom(1024)
+			print(result)
+		receive_sock.close()
+	sniffe_sock.close()
+	return result
 
 if __name__ == '__main__':
 
