@@ -76,9 +76,11 @@ def iphdr(opt):
 	#172.217.24.142
 	dst = 0x7f000001
 	ipheader = struct.pack("!BBHHHBBHLL", ((version & 0xff) <<4) + (headlength & 0xff),tos,totallength,id,((flag & 0xffff) << 13) + (offset & 0x1fff),ttl,protocol,checksum,src,dst)
+	print(ipheader)
 	return ipheader
 
 def UDPhdr():
+	print("this is udp")
 	src_port =56
 	dst_port =33434
 	header_len = 0
